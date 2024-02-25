@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Polygon inputPolygon = createInputPolygon();
-
+//
 //        Polygon inputPolygon = new Polygon();
 //        inputPolygon.addPoint(new Point(0.0, 0.0, 0.0));
 //        inputPolygon.addPoint(new Point(100.0, 0.0, 0.0));
@@ -63,9 +63,20 @@ public class Main {
 
         Polygon resultPolygon = new Polygon();
 
-        double height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.getPoint(1).getX() -
-                        polygon.getPoint(0).getX(), 2) + Math.pow(polygon.getPoint(1).getY() -
-                                polygon.getPoint(0).getY(), 2));
+//        double  height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.getPoint(1).getX() -
+//                polygon.getPoint(0).getX(), 2) + Math.pow(polygon.getPoint(2).getY() -
+//                polygon.getPoint(1).getY(), 2));
+
+        double height = 0.0;
+        if (azimuthAngle == 0 || azimuthAngle == 180) {
+            height = Math.tan(slopeAngleRad) * (polygon.getPoint(2).getY() - polygon.getPoint(1).getY());
+        } else if (azimuthAngle == 90 || azimuthAngle == 270) {
+            height = Math.tan(slopeAngleRad) * (polygon.getPoint(1).getX() - polygon.getPoint(0).getX());
+        } else{
+            height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.getPoint(1).getX() -
+                polygon.getPoint(0).getX(), 2) + Math.pow(polygon.getPoint(2).getY() -
+                polygon.getPoint(1).getY(), 2));
+        }
 
         for (int i = 0; i < polygon.size(); i++) {
             Point point = polygon.getPoint(i);
