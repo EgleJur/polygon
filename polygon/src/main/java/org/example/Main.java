@@ -13,15 +13,18 @@ public class Main {
 
     private static Polygon createInputPolygon() {
         Polygon polygon = new Polygon();
-        polygon.addPoint(new Point(0.0, 0.0, 0.0));
-        polygon.addPoint(new Point(100.0, 0.0, 0.0));
-        polygon.addPoint(new Point(100.0, 50.0, 0.0));
-        polygon.addPoint(new Point(0.0, 50.0, 0.0));
+        polygon.addPoint(new Point(40.0, 0.0, 0.0));
+        polygon.addPoint(new Point(90.0, 50.0, 0.0));
+        polygon.addPoint(new Point(50.0, 90.0, 0.0));
+        polygon.addPoint(new Point(0.0, 40.0, 0.0));
+        if (polygon.getPoints().isEmpty() || polygon.size() < 4) {
+            throw new IllegalArgumentException("Polygon must contain at least 4 points.");
+        }
         return polygon;
     }
 
     public static Polygon create3DPolygon(Polygon polygon,
-                                          double slopeAngle, double azimuthAngle)  {
+                                          double slopeAngle, double azimuthAngle) {
 
         double slopeAngleRad = Math.toRadians(slopeAngle);
         double azimuthAngleRad = Math.toRadians(azimuthAngle);
@@ -39,19 +42,15 @@ public class Main {
             double x = point.getX();
             double y = point.getY();
             double z = point.getZ();
-
-            if ((azimuthAngle == 0 && (i == 0 || i == 1)) ||
-                    (azimuthAngle == 90 && (i == 0 || i == 3)) ||
-                    (azimuthAngle == 180 && (i == 2 || i == 3)) ||
-                    (azimuthAngle == 270 && (i == 1 || i == 2))) {
-                z += height;
-            }
-
             double rotatedX = x;
             double rotatedY = y;
-            if (azimuthAngle != 0 && azimuthAngle != 90 && azimuthAngle != 180 && azimuthAngle != 270) {
-                rotatedX = x * Math.cos(azimuthAngleRad) - y * Math.sin(azimuthAngleRad);
-                rotatedY = x * Math.sin(azimuthAngleRad) + y * Math.cos(azimuthAngleRad);
+            if ((azimuthAngle == 0 && (i == 0 || i == 1)) ||
+                    ((azimuthAngle > 0 && azimuthAngle <= 90) && (i == 0 || i == 3)) ||
+                    ((azimuthAngle > 90 && azimuthAngle <= 180) && (i == 2 || i == 3)) ||
+                    ((azimuthAngle > 180 && azimuthAngle <= 270) && (i == 1 || i == 2)) ||
+                    ((azimuthAngle > 270 && azimuthAngle <= 360) && (i == 0 || i == 1))) {
+
+                z += height;
             }
 
             resultPolygon.addPoint(new Point(Math.round(rotatedX * 100.0) / 100.0,
