@@ -4,8 +4,10 @@ package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
 
@@ -14,36 +16,6 @@ class MainTest {
     @BeforeEach
     void setUp() {
         inputPolygon = createInputPolygon();
-    }
-
-    @Test
-    public void testCreate3DPolygon_Azimuth270_Slope45() {
-
-        double slopeAngle = 45;
-        double azimuthAngle = 270;
-
-        Polygon resultPolygon = Main.create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
-
-        assertEquals(4, resultPolygon.size());
-        assertTrue(comparePoints(resultPolygon.getPoint(0), 0.0, 0.0, 0.0));
-        assertTrue(comparePoints(resultPolygon.getPoint(1), 100.0, 0.0, 100.0));
-        assertTrue(comparePoints(resultPolygon.getPoint(2), 100.0, 50.0, 100.0));
-        assertTrue(comparePoints(resultPolygon.getPoint(3), 0.0, 50.0, 0.0));
-    }
-
-    @Test
-    public void testCreate3DPolygon_Azimuth180_Slope45() {
-
-        double slopeAngle = 45;
-        double azimuthAngle = 180;
-
-        Polygon resultPolygon = Main.create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
-
-        assertEquals(4, resultPolygon.size());
-        assertTrue(comparePoints(resultPolygon.getPoint(0), 0.0, 0.0, 0.0));
-        assertTrue(comparePoints(resultPolygon.getPoint(1), 100.0, 0.0, 0.0));
-        assertTrue(comparePoints(resultPolygon.getPoint(2), 100.0, 50.0, 100.0));
-        assertTrue(comparePoints(resultPolygon.getPoint(3), 0.0, 50.0, 100.0));
     }
 
     @Test
@@ -75,6 +47,36 @@ class MainTest {
         assertTrue(comparePoints(resultPolygon.getPoint(2), 100.0, 50.0, 0.0));
         assertTrue(comparePoints(resultPolygon.getPoint(3), 0.0, 50.0, 100.0));
     }
+
+    @Test
+    public void testCreate3DPolygon_Azimuth180_Slope45() {
+
+        double slopeAngle = 45;
+        double azimuthAngle = 180;
+
+        Polygon resultPolygon = Main.create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
+
+        assertEquals(4, resultPolygon.size());
+        assertTrue(comparePoints(resultPolygon.getPoint(0), 0.0, 0.0, 0.0));
+        assertTrue(comparePoints(resultPolygon.getPoint(1), 100.0, 0.0, 0.0));
+        assertTrue(comparePoints(resultPolygon.getPoint(2), 100.0, 50.0, 100.0));
+        assertTrue(comparePoints(resultPolygon.getPoint(3), 0.0, 50.0, 100.0));
+    }
+    @Test
+    public void testCreate3DPolygon_Azimuth270_Slope45() {
+
+        double slopeAngle = 45;
+        double azimuthAngle = 270;
+
+        Polygon resultPolygon = Main.create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
+
+        assertEquals(4, resultPolygon.size());
+        assertTrue(comparePoints(resultPolygon.getPoint(0), 0.0, 0.0, 0.0));
+        assertTrue(comparePoints(resultPolygon.getPoint(1), 100.0, 0.0, 100.0));
+        assertTrue(comparePoints(resultPolygon.getPoint(2), 100.0, 50.0, 100.0));
+        assertTrue(comparePoints(resultPolygon.getPoint(3), 0.0, 50.0, 0.0));
+    }
+
 
     private Polygon createInputPolygon() {
         Polygon polygon = new Polygon();
