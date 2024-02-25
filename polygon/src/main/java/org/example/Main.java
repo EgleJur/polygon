@@ -1,50 +1,44 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class Main {
     public static void main(String[] args) {
-        List<Map<String, Double>> inputPolygon = new ArrayList<>();
-        inputPolygon.add(createPoint(0.0, 0.0, 0.0));
-        inputPolygon.add(createPoint(100.0, 0.0, 0.0));
-        inputPolygon.add(createPoint(100.0, 50.0, 0.0));
-        inputPolygon.add(createPoint(0.0, 50.0, 0.0));
+        Polygon inputPolygon = createInputPolygon();
 
         double slopeAngle = 45;
         double azimuthAngle = 270;
 
-        List<Map<String, Double>> resultPolygon = create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
-
-        System.out.println("Resulting 3D polygon:");
-        for (Map<String, Double> point : resultPolygon) {
-            System.out.printf("(%.0f, %.0f, %.0f)%n", point.get("x"), point.get("y"), point.get("z"));
-        }
+        Polygon resultPolygon = create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
+        System.out.println(resultPolygon);
     }
-        public static Map<String, Double> createPoint(double x, double y, double z) {
-            Map<String, Double> point = new HashMap<>();
-            point.put("x", x);
-            point.put("y", y);
-            point.put("z", z);
-            return point;
-        }
 
-    public static List<Map<String, Double>> create3DPolygon(List<Map<String, Double>> polygon, double slopeAngle, double azimuthAngle) {
+    private static Polygon createInputPolygon() {
+        Polygon polygon = new Polygon();
+        polygon.addPoint(new Point(0.0, 0.0, 0.0));
+        polygon.addPoint(new Point(100.0, 0.0, 0.0));
+        polygon.addPoint(new Point(100.0, 50.0, 0.0));
+        polygon.addPoint(new Point(0.0, 50.0, 0.0));
+        return polygon;
+    }
+
+    public static Polygon create3DPolygon(Polygon polygon,
+                                          double slopeAngle, double azimuthAngle)  {
 
         double slopeAngleRad = Math.toRadians(slopeAngle);
         double azimuthAngleRad = Math.toRadians(azimuthAngle);
 
-        List<Map<String, Double>> resultPolygon = new ArrayList<>();
+        Polygon resultPolygon = new Polygon();
 
-        double height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.get(1).get("x") - polygon.get(0).get("x"), 2) + Math.pow(polygon.get(1).get("y") - polygon.get(0).get("y"), 2));
+        double height = Math.tan(slopeAngleRad) *
+                Math.sqrt(Math.pow(polygon.getPoint(1).getX() -
+                        polygon.getPoint(0).getX(), 2) +
+                        Math.pow(polygon.getPoint(1).getY() -
+                                polygon.getPoint(0).getY(), 2));
 
         for (int i = 0; i < polygon.size(); i++) {
-            Map<String, Double> point = polygon.get(i);
-            double x = point.get("x");
-            double y = point.get("y");
-            double z = point.get("z");
+            Point point = polygon.getPoint(i);
+            double x = point.getX();
+            double y = point.getY();
+            double z = point.getZ();
 
             if ((azimuthAngle == 0 && (i == 0 || i == 1)) ||
                     (azimuthAngle == 90 && (i == 0 || i == 3)) ||
@@ -60,7 +54,7 @@ public class Main {
                 rotatedY = x * Math.sin(azimuthAngleRad) + y * Math.cos(azimuthAngleRad);
             }
 
-            resultPolygon.add(createPoint(Math.round(rotatedX * 100.0) / 100.0,
+            resultPolygon.addPoint(new Point(Math.round(rotatedX * 100.0) / 100.0,
                     Math.round(rotatedY * 100.0) / 100.0,
                     Math.round(z * 100.0) / 100.0));
         }
