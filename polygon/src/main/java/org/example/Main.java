@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Polygon inputPolygon = createInputPolygon();
-//
+         Polygon inputPolygon = createInputPolygon();
+
 //        Polygon inputPolygon = new Polygon();
 //        inputPolygon.addPoint(new Point(0.0, 0.0, 0.0));
 //        inputPolygon.addPoint(new Point(100.0, 0.0, 0.0));
@@ -63,19 +63,15 @@ public class Main {
 
         Polygon resultPolygon = new Polygon();
 
-//        double  height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.getPoint(1).getX() -
-//                polygon.getPoint(0).getX(), 2) + Math.pow(polygon.getPoint(2).getY() -
-//                polygon.getPoint(1).getY(), 2));
-
         double height = 0.0;
         if (azimuthAngle == 0 || azimuthAngle == 180) {
             height = Math.tan(slopeAngleRad) * (polygon.getPoint(2).getY() - polygon.getPoint(1).getY());
         } else if (azimuthAngle == 90 || azimuthAngle == 270) {
             height = Math.tan(slopeAngleRad) * (polygon.getPoint(1).getX() - polygon.getPoint(0).getX());
-        } else{
+        } else {
             height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.getPoint(1).getX() -
-                polygon.getPoint(0).getX(), 2) + Math.pow(polygon.getPoint(2).getY() -
-                polygon.getPoint(1).getY(), 2));
+                    polygon.getPoint(0).getX(), 2) + Math.pow(polygon.getPoint(2).getY() -
+                    polygon.getPoint(1).getY(), 2));
         }
 
         for (int i = 0; i < polygon.size(); i++) {
@@ -83,12 +79,20 @@ public class Main {
             double z = point.getZ();
             double rotatedX = point.getX();
             double rotatedY = point.getY();
-            if (((azimuthAngle == 0 || (azimuthAngle > 270 && azimuthAngle <= 360)) && (i == 0 || i == 1)) ||
-                    ((azimuthAngle > 0 && azimuthAngle <= 90) && (i == 0 || i == 3)) ||
-                    ((azimuthAngle > 90 && azimuthAngle <= 180) && (i == 2 || i == 3)) ||
-                    ((azimuthAngle > 180 && azimuthAngle <= 270) && (i == 1 || i == 2))) {
+            if (((azimuthAngle == 0 || azimuthAngle == 360) && (i == 0 || i == 1)) ||
+                    ((azimuthAngle == 90) && (i == 0 || i == 3)) ||
+                    ((azimuthAngle == 180) && (i == 2 || i == 3)) ||
+                    ((azimuthAngle == 270) && (i == 1 || i == 2))) {
                 z += height;
             }
+            //
+//            if (
+//                    ((azimuthAngle > 0 && azimuthAngle <= 90) && (i == 0 )) ||
+//                            ((azimuthAngle > 90 && azimuthAngle <= 180) && ( i == 3)) ||
+//                            ((azimuthAngle > 180 && azimuthAngle <= 270) && ( i == 2)) ||
+//                            ((azimuthAngle > 270 && azimuthAngle <= 360) && ( i == 1))) {
+//                z += height;
+//            }
 
             resultPolygon.addPoint(new Point(Math.round(rotatedX * 100.0) / 100.0,
                     Math.round(rotatedY * 100.0) / 100.0,
