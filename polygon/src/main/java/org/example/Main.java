@@ -20,7 +20,7 @@ public class Main {
         inputPolygon.add(new Vector2D(0, 50));
 
         double slopeAngle = 45;
-        double azimuthAngle = 260;
+        double azimuthAngle = 0;
 
         List<Vector3D> transformedPolygon = create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
         for (Vector3D vertex : transformedPolygon) {
@@ -84,7 +84,8 @@ public class Main {
         List<Vector3D> resultPolygon = new ArrayList<>();
         for (Vector3D vertex : polygon) {
             Vector3D rotatedVertex = slopeRotation.apply(vertex);
-
+            double x = vertex.getX();
+            double y = vertex.getY();
             double z = vertex.getZ();
             if (((azimuthAngle == 0 || azimuthAngle == 360) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(1)))) ||
                     ((azimuthAngle == 90) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(3)))) ||
@@ -92,19 +93,18 @@ public class Main {
                     ((azimuthAngle == 270) && (vertex.equals(polygon.get(1)) || vertex.equals(polygon.get(2))))) {
 
                 z += height;
-                resultPolygon.add(Vector3D.of(vertex.getX(), vertex.getY(), z));
+                // resultPolygon.add(Vector3D.of(round(vertex.getX()), round(vertex.getY()),round(z)));
 
-            } else if (((azimuthAngle == 0 || azimuthAngle == 360) && (vertex.equals(polygon.get(2)) || vertex.equals(polygon.get(3)))) ||
-                    ((azimuthAngle == 90) && (vertex.equals(polygon.get(1)) || vertex.equals(polygon.get(2)))) ||
-                    ((azimuthAngle == 180) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(1)))) ||
-                    ((azimuthAngle == 270) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(3))))) {
-
-                resultPolygon.add(Vector3D.of(vertex.getX(), vertex.getY(), z));
-
-            } else {
-                resultPolygon.add(Vector3D.of(rotatedVertex.getX(), rotatedVertex.getY(), z));
+            } else if (azimuthAngle != 0 && azimuthAngle != 360 && azimuthAngle != 90 &&
+                    azimuthAngle != 180 && azimuthAngle != 270) {
+                x = rotatedVertex.getX();
+                y = rotatedVertex.getY();
+                z += height;
+//                z = rotatedVertex.getZ();
+//                resultPolygon.add(Vector3D.of(vertex.getX(), vertex.getY(), z));
             }
 
+            resultPolygon.add(Vector3D.of(round(x), round(y), round(z)));
             //
 //            if (
 //                    ((azimuthAngle > 0 && azimuthAngle <= 90) && (i == 0 )) ||
@@ -122,4 +122,9 @@ public class Main {
         }
         return resultPolygon;
     }
+
+    private static double round(double i) {
+        return (Math.round(i * 100.0) / 100.0);
+    }
+
 }
