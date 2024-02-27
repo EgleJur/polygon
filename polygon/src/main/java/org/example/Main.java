@@ -13,12 +13,6 @@ public class Main {
     public static void main(String[] args) {
         //  List<Vector2D> inputPolygon = createInputPolygon();
 
-//        Polygon inputPolygon = new Polygon();
-//        inputPolygon.addPoint(new Point(10.0, 10.0, 0.0));
-//        inputPolygon.addPoint(new Point(110.0, 10.0, 0.0));
-//        inputPolygon.addPoint(new Point(110.0, 60.0, 0.0));
-//        inputPolygon.addPoint(new Point(10.0, 60.0, 0.0));
-
         List<Vector2D> inputPolygon = new ArrayList<>();
         inputPolygon.add(new Vector2D(0, 0));
         inputPolygon.add(new Vector2D(100, 0));
@@ -26,7 +20,7 @@ public class Main {
         inputPolygon.add(new Vector2D(0, 50));
 
         double slopeAngle = 45;
-        double azimuthAngle = 270;
+        double azimuthAngle = 260;
 
         List<Vector3D> transformedPolygon = create3DPolygon(inputPolygon, slopeAngle, azimuthAngle);
         for (Vector3D vertex : transformedPolygon) {
@@ -57,7 +51,7 @@ public class Main {
                 continue;
             }
 
-            polygon.add(new Vector2D(x,y));
+            polygon.add(new Vector2D(x, y));
             i++;
         }
         scanner.close();
@@ -65,11 +59,11 @@ public class Main {
         return polygon;
     }
 
-    public static List<Vector3D> create3DPolygon(List<Vector2D> polygon,
-                                          double slopeAngle, double azimuthAngle) {
-        List<Vector3D> transformedPolygon = new ArrayList<>();
-        for (Vector2D vertex : polygon) {
-            transformedPolygon.add(Vector3D.of(vertex.getX(), vertex.getY(), 0.0));
+    public static List<Vector3D> create3DPolygon(List<Vector2D> polygon2D,
+                                                 double slopeAngle, double azimuthAngle) {
+        List<Vector3D> polygon = new ArrayList<>();
+        for (Vector2D vertex : polygon2D) {
+            polygon.add(Vector3D.of(vertex.getX(), vertex.getY(), 0.0));
         }
         double slopeAngleRad = Math.toRadians(slopeAngle);
 
@@ -88,11 +82,9 @@ public class Main {
 
 
         List<Vector3D> resultPolygon = new ArrayList<>();
-        for (Vector3D vertex : transformedPolygon) {
-            // Apply slope rotation first, then azimuth rotation
+        for (Vector3D vertex : polygon) {
             Vector3D rotatedVertex = slopeRotation.apply(vertex);
 
-            // Adjust Z-coordinate based on slope angle
             double z = vertex.getZ();
             if (((azimuthAngle == 0 || azimuthAngle == 360) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(1)))) ||
                     ((azimuthAngle == 90) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(3)))) ||
@@ -113,9 +105,6 @@ public class Main {
                 resultPolygon.add(Vector3D.of(rotatedVertex.getX(), rotatedVertex.getY(), z));
             }
 
-            // Add rotated and adjusted vertex to result polygon
-
-
             //
 //            if (
 //                    ((azimuthAngle > 0 && azimuthAngle <= 90) && (i == 0 )) ||
@@ -130,6 +119,7 @@ public class Main {
 //                    Math.round(z * 100.0) / 100.0));
 
 
-        }return resultPolygon;
+        }
+        return resultPolygon;
     }
 }
