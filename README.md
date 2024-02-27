@@ -10,8 +10,10 @@ The solution operates as follows:
 The user provides a 2D polygon (such as a rectangle) on the XY plane, a slope angle (the angle between the XY plane and the output polygon), and an azimuth angle (the direction towards which the output polygon should be oriented).
 
 ### Height Adjustment
+The height of each point in the input polygon is adjusted based on the slope angle. If the azimuth angle is 0 or 180 degrees, the height adjustment is applied to the y-coordinates of points, while for azimuth angles of 90 or 270 degrees, it's applied to the x-coordinates.
 
 ### Rotation
+If the azimuth angle is not one of the specified values (0, 90, 180, 270 degrees), the input polygon is rotated accordingly using basic trigonometric functions to calculate the new x and y coordinates of each point.
 
 ### Output
 The resulting 3D polygon is then returned, with each point having its adjusted height and, if necessary, rotated to match the specified azimuth angle.
