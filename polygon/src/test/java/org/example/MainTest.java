@@ -104,7 +104,6 @@ class MainTest {
 
     }
 
-
     private List<Vector2D> createInputPolygon() {
         List<Vector2D> polygon = new ArrayList<>();
         polygon.add(new Vector2D(0, 0));
@@ -114,7 +113,4 @@ class MainTest {
         return polygon;
     }
 
-    private boolean comparePoints(Point point, double x, double y, double z) {
-        return point.getX() == x && point.getY() == y && point.getZ() == z;
-    }
 }
