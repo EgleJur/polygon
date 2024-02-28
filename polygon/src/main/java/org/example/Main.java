@@ -68,20 +68,16 @@ public class Main {
         double slopeAngleRad = Math.toRadians(slopeAngle);
 
         double height = 0.0;
-        if (azimuthAngle == 0 || azimuthAngle == 180) {
-            height = Math.tan(slopeAngleRad) * (polygon.get(2).getY() - polygon.get(1).getY());
-        } else if (azimuthAngle == 90 || azimuthAngle == 270) {
-            height = Math.tan(slopeAngleRad) * (polygon.get(1).getX() - polygon.get(0).getX());
-        } else if ((azimuthAngle > 0 && azimuthAngle <= 90) || (azimuthAngle > 180 && azimuthAngle <= 270)){
-                        height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.get(2).getX() -
-                                polygon.get(0).getX(), 2) + Math.pow(polygon.get(2).getY() -
-                                polygon.get(0).getY(), 2));
-        }else if ((azimuthAngle > 90 && azimuthAngle <= 180) || (azimuthAngle > 270 && azimuthAngle <= 360)){
+        if (azimuthAngle == 0 || (azimuthAngle > 90 && azimuthAngle <= 180) || (azimuthAngle > 270 && azimuthAngle <= 360)) {
             height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.get(1).getX() -
-                    polygon.get(3).getX(), 2) + Math.pow(polygon.get(1).getY() -
-                    polygon.get(6).getY(), 2));
+                    polygon.get(2).getX(), 2) + Math.pow(polygon.get(1).getY() -
+                    polygon.get(2).getY(), 2));
+        } else if ((azimuthAngle > 0 && azimuthAngle <= 90) || (azimuthAngle > 180 && azimuthAngle <= 270)) {
+            height = Math.tan(slopeAngleRad) * Math.sqrt(Math.pow(polygon.get(0).getX() -
+                    polygon.get(1).getX(), 2) + Math.pow(polygon.get(0).getY() -
+                    polygon.get(1).getY(), 2));
         }
-        
+
         List<Vector3D> resultPolygon = new ArrayList<>();
         for (Vector3D vertex : polygon) {
 
