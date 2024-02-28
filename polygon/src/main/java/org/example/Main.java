@@ -93,20 +93,20 @@ public class Main {
             double x = vertex.getX();
             double y = vertex.getY();
             double z = vertex.getZ();
-            if (((azimuthAngle == 0 || azimuthAngle == 360) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(1)))) ||
-                    ((azimuthAngle == 90) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(3)))) ||
-                    ((azimuthAngle == 180) && (vertex.equals(polygon.get(2)) || vertex.equals(polygon.get(3)))) ||
-                    ((azimuthAngle == 270) && (vertex.equals(polygon.get(1)) || vertex.equals(polygon.get(2))))) {
+            if (((azimuthAngle == 0 || (azimuthAngle > 270 && azimuthAngle <= 360)) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(1)))) ||
+                    ((azimuthAngle > 0 && azimuthAngle <= 90) && (vertex.equals(polygon.get(0)) || vertex.equals(polygon.get(3)))) ||
+                    ((azimuthAngle > 90 && azimuthAngle <= 180) && (vertex.equals(polygon.get(2)) || vertex.equals(polygon.get(3)))) ||
+                    ((azimuthAngle > 180 && azimuthAngle <= 270) && (vertex.equals(polygon.get(1)) || vertex.equals(polygon.get(2))))) {
 
                 z += height;
-
-            } else if ((azimuthAngle > 0 && azimuthAngle <= 90) && (vertex.equals(polygon.get(0) )) ||
-                            ((azimuthAngle > 90 && azimuthAngle <= 180) && vertex.equals(polygon.get(3))) ||
-                            ((azimuthAngle > 180 && azimuthAngle <= 270) && ( vertex.equals(polygon.get(2)))) ||
-                            ((azimuthAngle > 270 && azimuthAngle <= 360) && ( vertex.equals(polygon.get(1))))) {
-                x = rotatedVertex.getX();
-                y = rotatedVertex.getY();
-                z += height;
+//
+//            } else if ((azimuthAngle > 0 && azimuthAngle <= 90) && (vertex.equals(polygon.get(0) )) ||
+//                            ((azimuthAngle > 90 && azimuthAngle <= 180) && vertex.equals(polygon.get(3))) ||
+//                            ((azimuthAngle > 180 && azimuthAngle <= 270) && ( vertex.equals(polygon.get(2)))) ||
+//                            ((azimuthAngle > 270 && azimuthAngle <= 360) && ( vertex.equals(polygon.get(1))))) {
+//                x = rotatedVertex.getX();
+//                y = rotatedVertex.getY();
+//                z += height;
             }
 
             resultPolygon.add(Vector3D.of(round(x), round(y), round(z)));
